@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "Lambda Test Tool": {
+      "commandName": "Executable",
+      "commandLineArgs": "",
+      "workingDirectory": ".",
+      "executablePath": "/Users/Bradyford/.dotnet/tools/dotnet-lambda-test-tool-8.0",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

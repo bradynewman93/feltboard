@@ -1,0 +1,72 @@
+# Build output
+bin/
+obj/
+out/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET local tools
+.config/dotnet-tools.json
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# VS Code
+.vscode/launch.json
+.vscode/tasks.json
+.vscode/.browserslist
+
+# Rider
+*.DotSettings.user
+
+# Test results
+TestResults/
+coverage/
+*.trx
+*.coverage
+*.coveragexml
+lcov.info
+
+# AWS Lambda
+*.zip
+publish/
+
+# CDK
+cdk.out/
+cdk.context.json
+
+# Environment / secrets
+.env
+.env.*
+*.env
+appsettings.local.json
+appsettings.Local.json
+appsettings.Development.json
+secrets.json
+aws-lambda-tools-defaults.json
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+logs/
