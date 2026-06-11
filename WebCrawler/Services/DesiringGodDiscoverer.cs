@@ -24,9 +24,7 @@ public class DesiringGodDiscoverer : IDesiringGodDiscoverer
     // Tune maxPages to control how deep each crawl goes per schedule run.
     private static readonly (string Path, string ResourceType, int MaxPages)[] ResourceSections =
     [
-        ("/resources/articles",        "article", 5),
-        ("/resources/sermons",         "sermon",  5),
-        ("/resources/devotionals",     "article", 3),
+        ("/articles/all",  "article",500),
     ];
 
     public async Task<List<DiscoveredArticle>> DiscoverAsync()
@@ -76,13 +74,9 @@ public class DesiringGodDiscoverer : IDesiringGodDiscoverer
             var html = await _httpClient.GetStringAsync(path);
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
- 
-            // DG resource cards typically use <a> tags with href matching /articles/* or /sermons/*
-            // The selector targets resource card links in the main content area.
-            // Inspect the live site to verify and adjust these selectors if DG updates their markup.
-            var articleLinks = doc.DocumentNode.SelectNodes(
-                "//article//a[@href] | //div[contains(@class,'resource-card')]//a[@href]");
- 
+
+            var articleLinks = doc.DocumentNode.SelectNodes("//a[@href]");
+
             if (articleLinks is null) return results;
  
             foreach (var link in articleLinks)
@@ -124,9 +118,8 @@ public class DesiringGodDiscoverer : IDesiringGodDiscoverer
         if (string.IsNullOrWhiteSpace(href)) return false;
         if (href.StartsWith("http") && !href.Contains("desiringgod.org")) return false;
         if (href.Contains('#') || href.Contains("mailto:")) return false;
- 
-        return href.Contains("/articles/") ||
-               href.Contains("/sermons/") ||
-               href.Contains("/devotionals/");
+        if (href.Contains("/articles/all")) return false;
+
+        return href.Contains("/articles/");
     }
 }

@@ -40,21 +40,20 @@ public class DesiringGodCrawler
     }
 
     [LambdaFunction]
-    public async Task Default()
+    public async Task<List<DiscoveredArticle>> Default()
     {
         _logger.LogInformation("Starting DesiringGod Discoverer at {time}",DateTime.UtcNow);
 
-        var articles = await _discoverer.DiscoverAsync();
+        List<DiscoveredArticle> result = new();
+        result.AddRange(await _discoverer.DiscoverAsync());
 
-        if(articles.Count == 0)
-        {
-            _logger.LogInformation("No articles discovered");
-            return;
-        }
+        _logger.LogInformation("Successfully enqueued {count} articles for parsing", result.Count);
 
-        await EnqueueDiscoveredArticles(articles);
+        return result;
 
-        _logger.LogInformation("Successfully enqueued {count} articles for parsing", articles.Count);
+        //await EnqueueDiscoveredArticles(articles);
+
+
     }
 
     private async Task EnqueueDiscoveredArticles(List<DiscoveredArticle> articles)
