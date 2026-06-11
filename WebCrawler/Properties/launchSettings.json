@@ -6,7 +6,7 @@
       "workingDirectory": ".",
       "executablePath": "/Users/Bradyford/.dotnet/tools/dotnet-lambda-test-tool-8.0",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "QUEUE_URL": "Development"
       }
     }
   }
