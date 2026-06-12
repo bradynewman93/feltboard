@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="DesiringGodParser/DesiringGodParser.csproj" />
   <Project Path="WebCrawler/WebCrawler.csproj" />
 </Solution>
