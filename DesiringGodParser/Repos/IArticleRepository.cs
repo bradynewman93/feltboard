@@ -5,5 +5,5 @@ namespace DesiringGodParser.Repos;
 
 public interface IArticleRepository
 {
-    public Task SaveArticle(ParsedArticle article);
+    public Task<ParsedArticle> SaveArticle(ParsedArticle article);
 }

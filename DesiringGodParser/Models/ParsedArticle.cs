@@ -13,4 +13,6 @@ public class ParsedArticle
     public DateTime? PublishedDate {get; init;}
 
     public string BodyText {get; init;}
+
+    public string? Key { get; set; }
 }

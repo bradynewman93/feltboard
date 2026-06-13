@@ -1,6 +1,10 @@
+using Amazon.Lambda.Annotations;
+using DesiringGodParser.Services;
+using DesiringGodParser.Repos;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace DesiringGodParser;
+using Microsoft.Extensions.Logging;
+using DesiringGodParser;
+using Amazon.Extensions.NETCore.Setup;
 
 [Amazon.Lambda.Annotations.LambdaStartup]
 public class Startup
@@ -15,23 +19,24 @@ public class Startup
     /// </summary>
     public void ConfigureServices(IServiceCollection services)
     {
-        // Here we'll add an instance of our calculator service that will be used by each function
-        services.AddSingleton<ICalculatorService>(new CalculatorService());
 
-        //// Example of creating the IConfiguration object and
-        //// adding it to the dependency injection container.
-        //var builder = new ConfigurationBuilder()
-        //                    .AddJsonFile("appsettings.json", true);
+        services.AddDefaultAWSOptions(new AWSOptions
+        {
+            Region = Amazon.RegionEndpoint.USEast1
+        });
 
-        //// Add AWS Systems Manager as a potential provider for the configuration. This is 
-        //// available with the Amazon.Extensions.Configuration.SystemsManager NuGet package.
-        //builder.AddSystemsManager("/app/settings");
+        services.AddSingleton<ILoggerFactory, LoggerFactory>();
+        services.AddLogging(b => b.AddConsole());
+        services.AddHttpClient<IArticleRetriever, DesiringGodRetriever>(client =>
+        {
+            client.BaseAddress = new Uri("https://www.desiringgod.org");
+            client.DefaultRequestHeaders.UserAgent.ParseAdd(
+                "Mozilla/5.0 (compatible; ResearchBot/1.0)");
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
 
-        //var configuration = builder.Build();
-        //services.AddSingleton<IConfiguration>(configuration);
+        services.AddSingleton<IArticleParser, DesiringGodArticleParser>();
+        services.AddSingleton<IArticleRepository, StubRepository>();
 
-        //// Example of using the AWSSDK.Extensions.NETCore.Setup NuGet package to add
-        //// the Amazon S3 service client to the dependency injection container.
-        //services.AddAWSService<Amazon.S3.IAmazonS3>();
     }
 }

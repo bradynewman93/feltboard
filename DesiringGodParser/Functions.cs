@@ -1,6 +1,5 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Annotations;
-using Amazon.Lambda.Annotations.APIGateway;
 using Microsoft.Extensions.Logging;
 using DesiringGodParser.Services;
 using DesiringGodParser.Models;
@@ -25,9 +24,14 @@ public class Functions
 
     private readonly ILogger _logger;
 
-       public Functions(ILoggerFactory loggerFactory)
+    public Functions(
+     ILoggerFactory loggerFactory,
+     IArticleParser articleParser,
+     IArticleRepository articleRepo)
     {
        _logger = loggerFactory.CreateLogger(nameof(DesiringGodParser));
+        _articleParser = articleParser;
+        _articleRepo = articleRepo;
     }
 
     [LambdaFunction]
