@@ -27,11 +27,13 @@ public class Functions
     public Functions(
      ILoggerFactory loggerFactory,
      IArticleParser articleParser,
-     IArticleRepository articleRepo)
+     IArticleRepository articleRepo,
+     IArticleRetriever articleRetriever)
     {
        _logger = loggerFactory.CreateLogger(nameof(DesiringGodParser));
         _articleParser = articleParser;
         _articleRepo = articleRepo;
+        _articleRetriever = articleRetriever;
     }
 
     [LambdaFunction]
