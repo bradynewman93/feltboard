@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Amazon.Extensions.NETCore.Setup;
 
-namespace WebCrawler.csproj;
+namespace WebCrawler;
 
 [Amazon.Lambda.Annotations.LambdaStartup]
 public class Startup
@@ -36,6 +36,7 @@ public class Startup
         });
         services.AddAWSService<IAmazonSQS>();
         //services.AddSingleton<IDesiringGodDiscoverer, DesiringGodDiscoverer>();
-        services.AddSingleton<DesiringGodCrawler>();
+
+
     }
 }

@@ -16,4 +16,3 @@ public class StubRepository : IArticleRepository
         return article;
     }
 }
-}

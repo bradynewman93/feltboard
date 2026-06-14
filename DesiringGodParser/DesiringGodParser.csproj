@@ -14,11 +14,10 @@
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="2.8.1" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.5" />
-    <PackageReference Include="Amazon.Lambda.Annotations" Version="1.9.0" />
-    <PackageReference Include="Amazon.Lambda.Core" Version="2.8.1" />
     <PackageReference Include="AWSSDK.Core" Version="3.5.1" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.6.13" />
+    <PackageReference Include="Amazon.Lambda.Annotations" Version="1.9.0" />
   </ItemGroup>
   <!-- 
     The FrameworkReference is used to reduce the deployment bundle size by not having to include 
