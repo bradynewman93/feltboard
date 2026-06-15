@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Amazon.Extensions.NETCore.Setup;
 using System.Net.Http;
 using System.Net;
+using Amazon.S3;
 
 namespace DesiringGodParser;
 
@@ -42,6 +43,7 @@ public class Startup
 
         services.AddSingleton<IArticleParser, DesiringGodArticleParser>();
         services.AddSingleton<IArticleRepository, StubRepository>();
+        services.AddAWSService<IAmazonS3>();
 
 
     }

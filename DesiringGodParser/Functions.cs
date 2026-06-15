@@ -43,7 +43,7 @@ public class Functions
 
         string articleHtml = await _articleRetriever.GetArticleHtml(articleUrl);
 
-        ParsedArticle parsedArticle = _articleParser.ParseArticleHtml(articleHtml);
+        ParsedArticle parsedArticle = _articleParser.ParseArticleHtml(articleUrl, articleHtml);
 
         await _articleRepo.SaveArticle(parsedArticle);
 

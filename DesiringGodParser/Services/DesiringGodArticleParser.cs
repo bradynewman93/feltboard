@@ -1,59 +1,55 @@
 
 using DesiringGodParser.Models;
 using DesiringGodParser.Services;
+using HtmlAgilityPack;
+using System.Text.RegularExpressions;
 
 public class DesiringGodArticleParser : IArticleParser
 {
 
-    public ParsedArticle ParseArticleHtml(string articleHtml)
+    private const string DesiringGodSource = "DESIRING-GOD";
+
+    public ParsedArticle ParseArticleHtml(string articleUrl, string articleHtml)
     {
-        
-        //     var doc = new HtmlDocument();
-        // doc.LoadHtml(html);
+        var doc = new HtmlDocument();
+        doc.LoadHtml(articleHtml);
 
-        // // Remove noise nodes first
-        // var noiseSelectors = new[]
-        // {
-        //     "//nav", "//header", "//footer", "//script",
-        //     "//style", "//aside", "//*[@class='related-articles']",
-        //     "//*[contains(@class,'social')]", "//*[contains(@class,'ad')]"
-        // };
+        // Extract header fields BEFORE removing noise
+        var title = doc.DocumentNode
+            .SelectSingleNode("//h1[contains(@class,'resource__title')]")?.InnerText.Trim()
+            ?? string.Empty;
 
-        // foreach (var selector in noiseSelectors)
-        // {
-        //     var nodes = doc.DocumentNode.SelectNodes(selector);
-        //     if (nodes is null) continue;
-        //     foreach (var node in nodes)
-        //         node.Remove();
-        // }
+        var author = doc.DocumentNode
+            .SelectSingleNode("//*[contains(@class,'js-modal-author-name')]")?.InnerText.Trim()
+            ?? string.Empty;
 
-        // // TGC-specific — inspect the actual DOM to confirm these selectors
-        // var title = doc.DocumentNode
-        //     .SelectSingleNode("//h1")?.InnerText.Trim() ?? string.Empty;
+        var dateStr = doc.DocumentNode
+            .SelectSingleNode("//time[@datetime]")?.GetAttributeValue("datetime", null);
 
-        // var author = doc.DocumentNode
-        //     .SelectSingleNode("//*[contains(@class,'author')]")?.InnerText.Trim();
+        // Now remove noise from the body content node only
+        var contentNode = doc.DocumentNode
+            .SelectSingleNode("//*[contains(@class,'resource__body')]");
 
-        // var dateStr = doc.DocumentNode
-        //     .SelectSingleNode("//time[@datetime]")?.GetAttributeValue("datetime", null);
+        var bodyText = string.Empty;
+        if (contentNode is not null)
+        {
+            // Remove scripts/styles nested in body
+            var bodyNoise = contentNode.SelectNodes(".//script | .//style | .//nav");
+            if (bodyNoise is not null)
+                foreach (var node in bodyNoise)
+                    node.Remove();
 
-        // var contentNode = doc.DocumentNode
-        //     .SelectSingleNode("//*[contains(@class,'article-body')] | //article");
-
-        // var bodyText = contentNode is not null
-        //     ? HtmlEntity.DeEntitize(contentNode.InnerText)
-        //     : string.Empty;
-
-        // // Normalize whitespace
-        // bodyText = Regex.Replace(bodyText, @"\s+", " ").Trim();
+            bodyText = HtmlEntity.DeEntitize(contentNode.InnerText);
+            bodyText = Regex.Replace(bodyText, @"\s+", " ").Trim();
+        }
 
         return new ParsedArticle
         {
-           Url = "",
-           Title = ""
-
+            Url = articleUrl,
+            Source = DesiringGodSource,
+            Title = title,
+            BodyText = bodyText,
+            Author = author
         };
     }
-
-
 }
