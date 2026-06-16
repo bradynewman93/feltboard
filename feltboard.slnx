@@ -1,6 +1,6 @@
 <Solution>
+  <Project Path="ArticleParser\ArticleParser.csproj" />
   <Project Path="Common/Common.csproj" />
-  <Project Path="DesiringGodParser/DesiringGodParser.csproj" />
+  <Project Path="DesiringGodCrawler\DesiringGodCrawler.csproj" />
   <Project Path="Infrastructure/Infrastructure.csproj" />
-  <Project Path="WebCrawler/WebCrawler.csproj" />
 </Solution>

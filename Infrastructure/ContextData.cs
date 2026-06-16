@@ -8,7 +8,6 @@ namespace Infrastructure;
 
 public class ContextDataHelper
 {
-
     public static string GetAppEnvironment(Construct scope)
     {
         string path = $"@feltboard/{ContextKeys.AppEnvironment}";
@@ -19,7 +18,7 @@ public class ContextDataHelper
             throw new Exception($"CDK Context Value {ContextKeys.AppEnvironment} not found.");
         }
 
-        return value.ToString();
+        return value.ToString()!;
     }
 
     public static string GetString(Construct scope, string key)
@@ -28,18 +27,16 @@ public class ContextDataHelper
         var path = $"@feltboard/{appEnvironment}/{key}";
         var value = scope.Node.TryGetContext(path);
 
-        if (string.IsNullOrWhiteSpace(value.ToString()))
-        {
-            string? defaultPath = $"feltboard/default/{key}";
-            var defaultValue = scope.Node.TryGetContext(defaultPath);
+        if (value != null && !string.IsNullOrWhiteSpace(value.ToString()))
+            return value.ToString()!;
 
-            if (string.IsNullOrWhiteSpace(defaultValue.ToString()))
-                return defaultValue.ToString();
+        string defaultPath = $"feltboard/default/{key}";
+        var defaultValue = scope.Node.TryGetContext(defaultPath);
 
-            throw new InvalidOperationException($"CDK context key '{path}' is not set and no default was provided.");
-        }
+        if (defaultValue != null && !string.IsNullOrWhiteSpace(defaultValue.ToString()))
+            return defaultValue.ToString()!;
 
-        return value.ToString();
+        throw new InvalidOperationException($"CDK context key '{path}' is not set and no default was provided.");
     }
 
     public static bool GetBool(Construct scope, string key)
@@ -48,20 +45,16 @@ public class ContextDataHelper
         var path = $"@feltboard/{appEnvironment}/{key}";
         var value = scope.Node.TryGetContext(path);
 
-        if (string.IsNullOrWhiteSpace(value.ToString()))
-        {
-            string? defaultPath = $"feltboard/default/{key}";
-            var defaultValue = scope.Node.TryGetContext(defaultPath).ToString();
+        if (value != null && !string.IsNullOrWhiteSpace(value.ToString()))
+            return bool.Parse(value.ToString()!);
 
-            if (string.IsNullOrWhiteSpace(defaultValue) && bool.TryParse(defaultValue, out bool defaultValueValue))
-            {
-                return defaultValueValue;
-            }
+        string defaultPath = $"feltboard/default/{key}";
+        var defaultValue = scope.Node.TryGetContext(defaultPath);
 
-            throw new InvalidOperationException($"CDK context key '{path}' is not set and no default was provided.");
-        }
+        if (defaultValue != null && bool.TryParse(defaultValue.ToString(), out bool parsed))
+            return parsed;
 
-        return bool.Parse(value.ToString());
+        throw new InvalidOperationException($"CDK context key '{path}' is not set and no default was provided.");
     }
 
     public static List<string> GetList(Construct scope, string key)
@@ -71,21 +64,14 @@ public class ContextDataHelper
 
         var value = scope.Node.TryGetContext(path);
 
-        // CDK context arrays come back as object[] when defined in cdk.json
         if (value is object[] arr)
-        {
             return arr.Select(x => x.ToString()!).ToList();
-        }
 
-
-        string defaultPath = $"@feltboard/{appEnv}/{key}";
-        object defaultValue = scope.Node.TryGetContext(defaultPath);
+        string defaultPath = $"@feltboard/default/{key}";
+        var defaultValue = scope.Node.TryGetContext(defaultPath);
 
         if (defaultValue is object[] defArr)
-        {
-            return defArr.Select(x => x.ToString()).ToList();
-
-        }
+            return defArr.Select(x => x.ToString()!).ToList();
 
         throw new InvalidOperationException($"CDK context key '{key}' is not set and no default was provided.");
     }
