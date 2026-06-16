@@ -10,7 +10,7 @@ public class EnvironmentUtil
 
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentException("EnvVariable: {} is null or empty.",key);
+            throw new ArgumentException("EnvVariable: {} is null or empty.", key);
         }
 
         return value;

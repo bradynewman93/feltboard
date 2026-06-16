@@ -30,7 +30,7 @@ public class Functions
      IArticleRepository articleRepo,
      IArticleRetriever articleRetriever)
     {
-       _logger = loggerFactory.CreateLogger(nameof(DesiringGodParser));
+        _logger = loggerFactory.CreateLogger(nameof(DesiringGodParser));
         _articleParser = articleParser;
         _articleRepo = articleRepo;
         _articleRetriever = articleRetriever;
@@ -39,7 +39,7 @@ public class Functions
     [LambdaFunction]
     public async Task Default(string articleUrl)
     {
-        _logger.LogInformation("parsing article for url {articleUrl}",articleUrl);
+        _logger.LogInformation("parsing article for url {articleUrl}", articleUrl);
 
         string articleHtml = await _articleRetriever.GetArticleHtml(articleUrl);
 

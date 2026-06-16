@@ -5,7 +5,7 @@ namespace DesiringGodParser.Repos;
 
 public class StubRepository : IArticleRepository
 {
-    
+
     public async Task<ParsedArticle> SaveArticle(ParsedArticle article)
     {
         string url = article.Url;

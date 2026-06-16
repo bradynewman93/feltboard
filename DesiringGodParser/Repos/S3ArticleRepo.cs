@@ -12,7 +12,7 @@ public class S3ArticleRepo : IArticleRepository
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
 
-    public S3ArticleRepo(IAmazonS3 s3 )
+    public S3ArticleRepo(IAmazonS3 s3)
     {
         _s3Client = s3;
         _bucketName = EnvironmentUtil.EnsureEnvVariable(EnvVariables.S3BucketName);
@@ -41,7 +41,7 @@ public class S3ArticleRepo : IArticleRepository
         await _s3Client.PutObjectAsync(request);
 
         article.Key = slug;
-        return article ;
+        return article;
     }
 
     private static string ExtractSlug(string url)

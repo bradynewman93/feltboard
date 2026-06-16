@@ -11,7 +11,7 @@ using System.Text.Json;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace WebCrawler.csproj;
+namespace WebCrawler;
 
 /// <summary>
 /// A collection of sample Lambda functions that provide a REST api for doing simple math calculations. 
@@ -28,7 +28,7 @@ public class DesiringGodCrawler
 
     private readonly JsonSerializerOptions _jsonOptions = new()
     {
-      PropertyNamingPolicy = JsonNamingPolicy.CamelCase  
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
     public DesiringGodCrawler(ILoggerFactory loggerFactory, IAmazonSQS sqsClient, IDesiringGodDiscoverer discoverer)
@@ -42,7 +42,7 @@ public class DesiringGodCrawler
     [LambdaFunction]
     public async Task<List<DiscoveredArticle>> Default()
     {
-        _logger.LogInformation("Starting DesiringGod Discoverer at {time}",DateTime.UtcNow);
+        _logger.LogInformation("Starting DesiringGod Discoverer at {time}", DateTime.UtcNow);
 
         List<DiscoveredArticle> result = new();
         result.AddRange(await _discoverer.DiscoverAsync());
@@ -58,12 +58,12 @@ public class DesiringGodCrawler
 
     private async Task EnqueueDiscoveredArticles(List<DiscoveredArticle> articles)
     {
-          const int batchSize = 10;
- 
+        const int batchSize = 10;
+
         for (var i = 0; i < articles.Count; i += batchSize)
         {
             var batch = articles.Skip(i).Take(batchSize).ToList();
- 
+
             var request = new SendMessageBatchRequest
             {
                 QueueUrl = _queueUrl,
@@ -73,9 +73,9 @@ public class DesiringGodCrawler
                     MessageBody = JsonSerializer.Serialize(article, _jsonOptions)
                 }).ToList()
             };
- 
+
             var response = await _sqsClient.SendMessageBatchAsync(request, CancellationToken.None);
- 
+
             if (response.Failed.Count > 0)
             {
                 foreach (var failure in response.Failed)

@@ -3,7 +3,7 @@
   "Transform": "AWS::Serverless-2016-10-31",
   "Description": "An AWS Serverless Application. This template is partially managed by Amazon.Lambda.Annotations (v1.9.0.0).",
   "Resources": {
-    "WebCrawlercsprojDesiringGodCrawlerDefaultGenerated": {
+    "WebCrawlerDesiringGodCrawlerDefaultGenerated": {
       "Type": "AWS::Serverless::Function",
       "Metadata": {
         "Tool": "Amazon.Lambda.Annotations"
@@ -17,7 +17,7 @@
           "AWSLambdaBasicExecutionRole"
         ],
         "PackageType": "Zip",
-        "Handler": "WebCrawler::WebCrawler.csproj.DesiringGodCrawler_Default_Generated::Default"
+        "Handler": "WebCrawler::WebCrawler.DesiringGodCrawler_Default_Generated::Default"
       }
     }
   },
