@@ -4,7 +4,7 @@ using Amazon.Lambda.Annotations.APIGateway;
 using Microsoft.Extensions.Logging;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using WebCrawler.Util;
+using Common.Util;
 using System.Security;
 using WebCrawler.Models;
 using System.Text.Json;

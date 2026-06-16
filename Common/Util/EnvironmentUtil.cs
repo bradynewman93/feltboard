@@ -1,6 +1,4 @@
-namespace DesiringGodParser.Util;
-
-
+namespace Common.Util;
 
 public class EnvironmentUtil
 {

@@ -1,7 +1,4 @@
 ﻿using Amazon.CDK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Infrastructure
 {
@@ -10,9 +7,9 @@ namespace Infrastructure
         public static void Main(string[] args)
         {
             var app = new App();
-            new InfrastructureStack(app, "FeltBoard", new StackProps
+            _ = new InfrastructureStack(app, "FeltBoard", new StackProps
             {
-                Env = new Amazon.CDK.Environment
+                Env = new Environment
                 {
                     Region = "us-east-1"
                 }
