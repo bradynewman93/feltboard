@@ -1,7 +1,7 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Common.Util;
-using DesiringGodParser.Constants;
+using Common.Constants;
 using DesiringGodParser.Models;
 using System.Text.Json;
 
