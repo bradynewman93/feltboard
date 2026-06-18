@@ -20,7 +20,7 @@ public class DesiringGodDiscoverer : IDesiringGodDiscoverer
 
     private static readonly (string Path, string ResourceType, int MaxPages)[] ResourceSections =
     [
-        ("/articles/all", "article", 500),
+        ("/articles/all", "article", 5),
     ];
 
     public async Task<List<DiscoveredArticle>> DiscoverAsync()

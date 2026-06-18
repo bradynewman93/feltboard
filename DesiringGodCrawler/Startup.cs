@@ -29,6 +29,7 @@ public class Startup
         });
 
         services.AddSingleton<ILoggerFactory, LoggerFactory>();
+        services.AddSingleton<IArticleTrackingRepository, DynamoArticleTrackingRepo>();
         services.AddLogging(b => b.AddConsole());
         services.AddHttpClient<IDesiringGodDiscoverer, DesiringGodDiscoverer>(client =>
         {

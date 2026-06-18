@@ -6,7 +6,8 @@
       "workingDirectory": ".",
       "executablePath": "/Users/Bradyford/.dotnet/tools/dotnet-lambda-test-tool-8.0",
       "environmentVariables": {
-        "QUEUE_URL": "Development"
+        "QUEUE_URL": "https://sqs.us-east-1.amazonaws.com/667815963617/dev-article-parser",
+        "TABLE_NAME" : "dev-article-tracking"
       }
     }
   }

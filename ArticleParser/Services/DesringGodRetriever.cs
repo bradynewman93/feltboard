@@ -11,8 +11,20 @@ public class DesiringGodRetriever : IArticleRetriever
 
     public async Task<string> GetArticleHtml(string articleUrl)
     {
-        var response = await _httpClient.GetAsync(articleUrl);
-        response.EnsureSuccessStatusCode();
-        return await response.Content.ReadAsStringAsync();
+        int[] retryDelaysSeconds = [5, 15, 30];
+
+        for (int attempt = 0; ; attempt++)
+        {
+            var response = await _httpClient.GetAsync(articleUrl);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests && attempt < retryDelaysSeconds.Length)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(retryDelaysSeconds[attempt]));
+                continue;
+            }
+
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
     }
 }

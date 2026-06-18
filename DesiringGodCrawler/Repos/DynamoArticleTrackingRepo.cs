@@ -24,13 +24,13 @@ public class DynamoArticleTrackingRepo : IArticleTrackingRepository
             TableName = _tableName,
             Key = new Dictionary<string, AttributeValue>
             {
-                { "url", new AttributeValue(url) },
+                { "resourceUrl", new AttributeValue(url) },
                 { "source", new AttributeValue(source) }
             },
-            ProjectionExpression = "url"
+            ProjectionExpression = "resourceUrl"
         });
 
-        return response.Item.Count > 0;
+        return response.IsItemSet;
     }
 
     public async Task SaveAsync(string url, string source, string status, DateTimeOffset processedAt)
@@ -40,7 +40,7 @@ public class DynamoArticleTrackingRepo : IArticleTrackingRepository
             TableName = _tableName,
             Item = new Dictionary<string, AttributeValue>
             {
-                { "url", new AttributeValue(url) },
+                { "resourceUrl", new AttributeValue(url) },
                 { "source", new AttributeValue(source) },
                 { "processingStatus", new AttributeValue(status) },
                 { "dateProcessed", new AttributeValue(processedAt.ToString("O")) }

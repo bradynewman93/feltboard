@@ -19,7 +19,7 @@ namespace Infrastructure
             var articleTable = new Table(this, $"{appEnv}-ArticleTrackingTable", new TableProps
             {
                 TableName = $"{appEnv}-article-tracking",
-                PartitionKey = new Attribute { Name = "url", Type = AttributeType.STRING },
+                PartitionKey = new Attribute { Name = "resourceUrl", Type = AttributeType.STRING },
                 SortKey = new Attribute { Name = "source", Type = AttributeType.STRING },
                 BillingMode = BillingMode.PAY_PER_REQUEST,
                 RemovalPolicy = appEnv == "prod" ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY
@@ -64,6 +64,7 @@ namespace Infrastructure
                 Code = Code.FromAsset("../ArticleParser/bin/Release/net8.0/linux-x64"),
                 MemorySize = 512,
                 Timeout = Duration.Minutes(5),
+                ReservedConcurrentExecutions = 1,
                 Environment = new Dictionary<string, string>
                 {
                     { "TABLE_NAME", articleTable.TableName }
@@ -77,7 +78,8 @@ namespace Infrastructure
 
             parserFunction.AddEventSource(new SqsEventSource(articleQueue, new SqsEventSourceProps
             {
-                BatchSize = 1
+                BatchSize = 1,
+                MaxConcurrency = 1
             }));
 
             new Rule(this, "DesiringGodCrawlerSchedule", new RuleProps
