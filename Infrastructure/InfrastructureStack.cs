@@ -22,7 +22,7 @@ namespace Infrastructure
                 PartitionKey = new Attribute { Name = "url", Type = AttributeType.STRING },
                 SortKey = new Attribute { Name = "source", Type = AttributeType.STRING },
                 BillingMode = BillingMode.PAY_PER_REQUEST,
-                RemovalPolicy = RemovalPolicy.RETAIN
+                RemovalPolicy = appEnv == "prod" ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY
             });
 
             var articleDlq = new Queue(this, $"{appEnv}-ArticleParserDLQ", new QueueProps
@@ -45,7 +45,7 @@ namespace Infrastructure
             var crawlerFunction = new Function(this, $"{appEnv}-DesiringGodCrawler", new FunctionProps
             {
                 Runtime = Runtime.DOTNET_8,
-                Handler = "DesiringGodCrawler::DesiringGodCrawler.DesiringGodCrawler_Default_Generated::Default",
+                Handler = "DesiringGodCrawler::DesiringGodCrawler.Functions_Default_Generated::Default",
                 Code = Code.FromAsset("../DesiringGodCrawler/bin/Release/net8.0/linux-x64"),
                 MemorySize = 512,
                 Timeout = Duration.Minutes(5),

@@ -7,7 +7,8 @@ namespace Infrastructure
         public static void Main(string[] args)
         {
             var app = new App();
-            _ = new InfrastructureStack(app, "FeltBoard", new StackProps
+            string appEnvironment = ContextDataHelper.GetAppEnvironment(app);
+            _ = new InfrastructureStack(app, $"{appEnvironment}-FeltBoard", new StackProps
             {
                 Env = new Environment
                 {
