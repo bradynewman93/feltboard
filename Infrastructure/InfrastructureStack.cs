@@ -35,6 +35,7 @@ namespace Infrastructure
             {
                 QueueName = $"{appEnv}-article-parser",
                 VisibilityTimeout = Duration.Minutes(6),
+                DeliveryDelay = Duration.Seconds(10),
                 DeadLetterQueue = new DeadLetterQueue
                 {
                     Queue = articleDlq,
@@ -64,7 +65,6 @@ namespace Infrastructure
                 Code = Code.FromAsset("../ArticleParser/bin/Release/net8.0/linux-x64"),
                 MemorySize = 512,
                 Timeout = Duration.Minutes(5),
-                ReservedConcurrentExecutions = 1,
                 Environment = new Dictionary<string, string>
                 {
                     { "TABLE_NAME", articleTable.TableName }
@@ -78,8 +78,7 @@ namespace Infrastructure
 
             parserFunction.AddEventSource(new SqsEventSource(articleQueue, new SqsEventSourceProps
             {
-                BatchSize = 1,
-                MaxConcurrency = 1
+                BatchSize = 1
             }));
 
             new Rule(this, "DesiringGodCrawlerSchedule", new RuleProps
