@@ -48,6 +48,7 @@ namespace Infrastructure
                 Runtime = Runtime.DOTNET_8,
                 Handler = "DesiringGodCrawler::DesiringGodCrawler.Functions_Default_Generated::Default",
                 Code = Code.FromAsset("../DesiringGodCrawler/bin/Release/net8.0/linux-x64"),
+                FunctionName = $"{appEnv}-DesiringGodCrawler",
                 MemorySize = 512,
                 Timeout = Duration.Minutes(5),
                 Environment = new Dictionary<string, string>
@@ -63,6 +64,7 @@ namespace Infrastructure
                 Runtime = Runtime.DOTNET_8,
                 Handler = "ArticleParser::ArticleParser.Functions_Default_Generated::Default",
                 Code = Code.FromAsset("../ArticleParser/bin/Release/net8.0/linux-x64"),
+                FunctionName = $"{appEnv}-ArticleParser",
                 MemorySize = 512,
                 Timeout = Duration.Minutes(5),
                 Environment = new Dictionary<string, string>

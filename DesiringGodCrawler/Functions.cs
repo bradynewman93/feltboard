@@ -53,6 +53,7 @@ public class Functions
         {
             var response = await _sqsClient.SendMessageAsync(new SendMessageRequest
             {
+                DelaySeconds = Random.Shared.Next(1,101),
                 QueueUrl = _queueUrl,
                 MessageBody = JsonSerializer.Serialize(article, _jsonOptions)
             });
