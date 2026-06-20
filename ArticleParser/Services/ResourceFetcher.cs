@@ -1,3 +1,5 @@
+using HtmlAgilityPack;
+
 namespace ArticleParser.Services;
 
 public class ResourceFetcher : IResourceFetcher
@@ -9,7 +11,7 @@ public class ResourceFetcher : IResourceFetcher
         _httpClient = httpClient;
     }
 
-    public async Task<string> GetArticleHtml(string articleUrl)
+    public async Task<HtmlDocument> GetArticleHtml(string articleUrl)
     {
         int[] retryDelaysSeconds = [5, 15, 30];
 
@@ -24,7 +26,11 @@ public class ResourceFetcher : IResourceFetcher
             }
 
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            string rawHtml =  await response.Content.ReadAsStringAsync();
+
+            var doc = new  HtmlDocument();
+            doc.LoadHtml(rawHtml);
+            return doc;
         }
     }
 }

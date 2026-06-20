@@ -1,7 +1,9 @@
+using HtmlAgilityPack;
+
 namespace ArticleParser.Services;
 
 
 public interface IResourceFetcher
 {
-    public Task<string> GetArticleHtml(string articleUrl);
+    public Task<HtmlDocument> GetArticleHtml(string articleUrl);
 }

@@ -4,5 +4,5 @@ namespace ArticleParser;
 
 public interface IArticleDiscoveredHandler
 {
-    public Task ParseResource(DiscoveredArticle discoveredResouce);
+    public Task Handler(DiscoveredArticle discoveredResouce);
 }

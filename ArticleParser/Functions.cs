@@ -43,7 +43,7 @@ public class Functions
 
             _logger.LogInformation("Parsing article for url {Url}", article.ResourceUrl);
             
-            await _articleDiscoveredHandler.ParseResource(article);
+            await _articleDiscoveredHandler.Handler(article);
             
             _logger.LogInformation("Completed parsing resource for url {Url}", article.ResourceUrl);
         }
