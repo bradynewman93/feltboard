@@ -1,10 +1,10 @@
 namespace ArticleParser.Services;
 
-public class DesiringGodRetriever : IArticleRetriever
+public class ResourceFetcher : IResourceFetcher
 {
     private readonly HttpClient _httpClient;
 
-    public DesiringGodRetriever(HttpClient httpClient)
+    public ResourceFetcher(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }

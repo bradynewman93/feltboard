@@ -4,6 +4,7 @@ using Amazon.DynamoDBv2;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Amazon.Extensions.NETCore.Setup;
+using AWS.Lambda.Powertools.Logging;
 using Common.Repos;
 using DesiringGodCrawler.Repos;
 using DesiringGodCrawler.Services;
@@ -30,8 +31,8 @@ public class Startup
 
         services.AddSingleton<ILoggerFactory, LoggerFactory>();
         services.AddSingleton<IArticleTrackingRepository, DynamoArticleTrackingRepo>();
-        services.AddLogging(b => b.AddConsole());
-        services.AddHttpClient<IDesiringGodDiscoverer, DesiringGodDiscoverer>(client =>
+        services.AddLogging(b => b.AddPowertoolsLogger());
+        services.AddHttpClient<IDesiringGodArticleDiscoverer, DesiringGodArticleDiscoverer>(client =>
         {
             client.BaseAddress = new Uri("https://www.desiringgod.org");
             client.DefaultRequestHeaders.UserAgent.ParseAdd(

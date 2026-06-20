@@ -24,7 +24,10 @@ public class Startup
 
         //services.AddSingleton<ILoggerFactory, LoggerFactory>();
         services.AddLogging(b => b.AddConsole());
-        services.AddHttpClient<IArticleRetriever, DesiringGodRetriever>(client =>
+        services.AddSingleton<IResourceParserFactory, ResourceParserFactory>();
+        services.AddSingleton<IArticleKnowledgeBase, S3KnowledgeBase>();
+        services.AddSingleton<IArticleDiscoveredHandler, ResourceDiscoveredHandler>();
+        services.AddHttpClient<IResourceFetcher, ResourceFetcher>(client =>
  {
      client.BaseAddress = new Uri("https://www.desiringgod.org");
      client.DefaultRequestHeaders.UserAgent.ParseAdd(
@@ -41,8 +44,7 @@ public class Startup
                                | DecompressionMethods.Brotli
     });
 
-        services.AddSingleton<IArticleParser, DesiringGodArticleParser>();
-        services.AddSingleton<IArticleRepository, StubRepository>();
+        
         services.AddAWSService<IAmazonS3>();
 
 

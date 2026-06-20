@@ -1,7 +1,7 @@
 namespace ArticleParser.Services;
 
 
-public interface IArticleRetriever
+public interface IResourceFetcher
 {
     public Task<string> GetArticleHtml(string articleUrl);
 }

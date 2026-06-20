@@ -1,6 +1,8 @@
+using System.Diagnostics;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Common.Constants;
+using Common.Models;
 using Common.Repos;
 using Common.Util;
 
@@ -33,18 +35,21 @@ public class DynamoArticleTrackingRepo : IArticleTrackingRepository
         return response.IsItemSet;
     }
 
-    public async Task SaveAsync(string url, string source, string status, DateTimeOffset processedAt)
+    public async Task<DiscoveredArticle> SaveAsync(DiscoveredArticle article)
     {
         await _dynamo.PutItemAsync(new PutItemRequest
         {
             TableName = _tableName,
             Item = new Dictionary<string, AttributeValue>
             {
-                { "resourceUrl", new AttributeValue(url) },
-                { "source", new AttributeValue(source) },
-                { "processingStatus", new AttributeValue(status) },
-                { "dateProcessed", new AttributeValue(processedAt.ToString("O")) }
+                { "resourceUrl", new AttributeValue(article.ResourceUrl) },
+                { "source", new AttributeValue(article.ResourceSource) },
+                { "processingStatus", new AttributeValue(article.ProcessingStatus) },
+                { "resourceType", new AttributeValue(article.ResourceType) },
+                { "dateDiscovered", new AttributeValue(article.DiscoveredAt.ToString("O")) },
             }
         });
+
+        return article;
     }
 }

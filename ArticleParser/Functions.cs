@@ -14,10 +14,9 @@ namespace ArticleParser;
 
 public class Functions
 {
-    private readonly IArticleRetriever _articleRetriever;
-    private readonly IArticleParser _articleParser;
-    private readonly IArticleRepository _articleRepo;
+    
     private readonly ILogger _logger;
+    private readonly IArticleDiscoveredHandler _articleDiscoveredHandler;
 
     private static readonly JsonSerializerOptions _jsonOptions = new()
     {
@@ -26,14 +25,12 @@ public class Functions
 
     public Functions(
         ILoggerFactory loggerFactory,
-        IArticleParser articleParser,
-        IArticleRepository articleRepo,
-        IArticleRetriever articleRetriever)
+        IArticleDiscoveredHandler articleDiscoveredHandler
+        )
     {
         _logger = loggerFactory.CreateLogger(nameof(ArticleParser));
-        _articleParser = articleParser;
-        _articleRepo = articleRepo;
-        _articleRetriever = articleRetriever;
+        _articleDiscoveredHandler = articleDiscoveredHandler;
+        
     }
 
     [LambdaFunction]
@@ -44,11 +41,11 @@ public class Functions
             var article = JsonSerializer.Deserialize<DiscoveredArticle>(record.Body, _jsonOptions)
                 ?? throw new InvalidOperationException($"Failed to deserialize SQS message: {record.Body}");
 
-            _logger.LogInformation("Parsing article for url {Url}", article.Url);
-
-            string articleHtml = await _articleRetriever.GetArticleHtml(article.Url);
-            ParsedArticle parsedArticle = _articleParser.ParseArticleHtml(article.Url, articleHtml);
-            await _articleRepo.SaveArticle(parsedArticle);
+            _logger.LogInformation("Parsing article for url {Url}", article.ResourceUrl);
+            
+            await _articleDiscoveredHandler.ParseResource(article);
+            
+            _logger.LogInformation("Completed parsing resource for url {Url}", article.ResourceUrl);
         }
     }
 }
