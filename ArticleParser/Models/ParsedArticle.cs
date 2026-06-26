@@ -8,6 +8,8 @@ public class ParsedArticle
 
     public required string Title { get; init; }
 
+    public required string ResourceType { get; init; }
+
     public string? Author { get; init; }
 
     public DateTime? PublishedDate { get; init; }

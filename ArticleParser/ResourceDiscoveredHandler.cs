@@ -33,23 +33,19 @@ public class ResourceDiscoveredHandler : IArticleDiscoveredHandler
     
     public async Task Handler(DiscoveredArticle discoveredResouce)
     {
-        //check if resource has been handled already or is being handled
-        
-        //fetch html
         HtmlDocument resourceHtml = await _resourceFetcher.GetArticleHtml(discoveredResouce.ResourceUrl);
         
-        //build parser from factory
         
-        
-        //parse article
         IResourceParser parser = _parserFactory.CreateResourceParser(discoveredResouce);
         
         ParsedArticle parsedResource = await parser.ParseResource(discoveredResouce,  resourceHtml);
         
         //save into S3
         
+        await _articleKnowledgeBase.PersistResource(parsedResource);
+        
         //updated resource to status processed
         
-        throw new NotImplementedException();
+        
     }
 }

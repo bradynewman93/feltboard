@@ -15,7 +15,7 @@ public class S3ArticleRepo : IArticleRepository
     public S3ArticleRepo(IAmazonS3 s3)
     {
         _s3Client = s3;
-        _bucketName = EnvironmentUtil.EnsureEnvVariable(EnvVariables.S3BucketName);
+        _bucketName = EnvironmentUtil.EnsureEnvVariable(EnvVariables.KnowledgeBaseBucketName);
     }
 
     public async Task<ParsedArticle> SaveArticle(ParsedArticle article)

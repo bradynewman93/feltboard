@@ -47,6 +47,5 @@ public class Startup
         
         services.AddAWSService<IAmazonS3>();
 
-
     }
 }

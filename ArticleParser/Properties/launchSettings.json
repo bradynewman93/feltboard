@@ -3,10 +3,13 @@
     "Lambda Test Tool": {
       "commandName": "Executable",
       "commandLineArgs": "",
-      "workingDirectory": ".",
+      "region" : "us-east-1",
+      "workingDirectory": "./bin/Debug/net8.0",
       "executablePath": "/Users/Bradyford/.dotnet/tools/dotnet-lambda-test-tool-8.0",
       "environmentVariables": {
-        "QUEUE_URL": "Development"
+        "QUEUE_URL": "Development",
+        "AWS_PROFILE": "personal",
+        "KNOWLEDGE_BASE_BUCKET_NAME": "dev-article-knowledge-base"
       }
     }
   }

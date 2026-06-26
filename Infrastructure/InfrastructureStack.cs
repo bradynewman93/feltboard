@@ -5,6 +5,7 @@ using Amazon.CDK.AWS.Events;
 using Amazon.CDK.AWS.Events.Targets;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.Lambda.EventSources;
+using Amazon.CDK.AWS.S3;
 using Amazon.CDK.AWS.SQS;
 using Constructs;
 
@@ -15,6 +16,13 @@ namespace Infrastructure
         internal InfrastructureStack(Construct scope, string id, IStackProps? props = null) : base(scope, id, props)
         {
             string appEnv = ContextDataHelper.GetAppEnvironment(scope);
+
+            var knowledgeBaseBucket = new Bucket(this, $"{appEnv}-ArticleKnowledgeBase", new BucketProps
+            {
+                BucketName = $"{appEnv}-article-knowledge-base",
+                RemovalPolicy = appEnv == "prod" ? RemovalPolicy.RETAIN : RemovalPolicy.DESTROY,
+                AutoDeleteObjects = appEnv != "prod"
+            });
 
             var articleTable = new Table(this, $"{appEnv}-ArticleTrackingTable", new TableProps
             {
@@ -69,7 +77,8 @@ namespace Infrastructure
                 Timeout = Duration.Minutes(5),
                 Environment = new Dictionary<string, string>
                 {
-                    { "TABLE_NAME", articleTable.TableName }
+                    { "TABLE_NAME", articleTable.TableName },
+                    { "KNOWLEDGE_BASE_BUCKET", knowledgeBaseBucket.BucketName }
                 },
                 Description = "Parses Desiring God articles and saves them to S3"
             });
@@ -77,6 +86,7 @@ namespace Infrastructure
             articleTable.GrantReadWriteData(crawlerFunction);
             articleTable.GrantReadWriteData(parserFunction);
             articleQueue.GrantSendMessages(crawlerFunction);
+            knowledgeBaseBucket.GrantReadWrite(parserFunction);
 
             parserFunction.AddEventSource(new SqsEventSource(articleQueue, new SqsEventSourceProps
             {

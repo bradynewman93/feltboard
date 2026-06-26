@@ -3,7 +3,7 @@
     {
       "messageId": "19dd0b57-b21e-4ac1-bd88-01bbb068cb78",
       "receiptHandle": "MessageReceiptHandle",
-      "body": "{\"resourceUrl\":\"https://www.desiringgod.org/articles/20-quotes-from-killing-calvinism\",\"resourceType\":\"article\",\"resourceSource\":\"desiring-god\",\"discoveredAt\":\"2026-01-01\",\"processingStatus\":\"QUEUED\"}",
+      "body": "{\n  \"resourceUrl\" : \"https://www.desiringgod.org/articles/a-critical-heart-is-a-miserable-heart\",\n  \"resourceType\" : \"article\",\n  \"resourceSource\" : \"desiring-god\",\n  \"discoveredAt\" : \"2026-01-01\",\n  \"processingStatus\" : \"QUEUED\"\n}",
       "attributes": {
         "ApproximateReceiveCount": "1",
         "SentTimestamp": "1523232000000",
@@ -13,8 +13,8 @@
       "messageAttributes": {},
       "md5OfBody": "7b270e59b47ff90a553787216d55d91d",
       "eventSource": "aws:sqs",
-      "eventSourceARN": "arn:aws:sqs:us-east-1:123456789012:MyQueue",
-      "awsRegion": "us-east-1"
+      "eventSourceARN": "arn:{partition}:sqs:{region}:123456789012:MyQueue",
+      "awsRegion": "{region}"
     }
   ]
 }

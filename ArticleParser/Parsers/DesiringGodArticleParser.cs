@@ -47,6 +47,7 @@ public class DesiringGodArticleParser : IResourceParser
 
         return new ParsedArticle
         {
+            ResourceType =  resource.ResourceType,
             Url = resource.ResourceUrl,
             Source = resource.ResourceSource,
             Title = title,
